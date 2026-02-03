@@ -75,7 +75,7 @@ def main():
             # 5️⃣ 插入（HTTP 原生 SQL）
             t1 = datetime.now()
             insert_values = strategy.build_insert_values(res["result"], data)
-            print("insert_values", insert_values)
+            # print("insert_values", insert_values)
             ck.insert(
                 table=task["insert_table"],
                 columns=task["insert_cols"],
