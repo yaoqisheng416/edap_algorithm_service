@@ -2,14 +2,15 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# 复制代码和依赖文件
+# 复制项目文件
 COPY . /app
 
-# 确保 pip 升级并安装依赖
-RUN apt-get update && apt-get install -y gcc libffi-dev \
+# 安装系统依赖和 Python 包
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        gcc g++ libffi-dev libssl-dev libsnappy-dev \
     && python -m pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt \
-    && apt-get remove -y gcc \
+    && apt-get remove -y gcc g++ \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
