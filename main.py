@@ -39,7 +39,7 @@ def main():
                     db_conn, log_id,
                     stage="STRATEGY", action="get_strategy",
                     level="ERROR", status="FAIL",
-                    start_time=datetime.now(), end_time=datetime.now(),
+                    start_time=datetime.utcnow(), end_time=datetime.utcnow(),
                     message=str(e)
                 )
                 update_main_log(db_conn, log_id, "FAIL", str(e))
@@ -55,14 +55,14 @@ def main():
                     db_conn, log_id,
                     stage="SCRIPT", action="get_script",
                     level="ERROR", status="FAIL",
-                    start_time=datetime.now(), end_time=datetime.now(),
+                    start_time=datetime.utcnow(), end_time=datetime.utcnow(),
                     message=str(e)
                 )
                 update_main_log(db_conn, log_id, "FAIL", str(e))
                 continue
 
             # 4️⃣ 查询（SQL 来自 Kafka）
-            t1 = datetime.now()
+            t1 = datetime.utcnow()
             try:
                 data = ck.query(task["query_sql"])
             except Exception as e:
@@ -70,12 +70,12 @@ def main():
                     db_conn, log_id,
                     stage="CK", action="query",
                     level="ERROR", status="FAIL",
-                    start_time=t1, end_time=datetime.now(),
+                    start_time=t1, end_time=datetime.utcnow(),
                     message=str(e)
                 )
                 update_main_log(db_conn, log_id, "FAIL", f"CK query failed: {e}")
                 continue
-            t2 = datetime.now()
+            t2 = datetime.utcnow()
             insert_detail_log(
                 db_conn, log_id,
                 stage="CK", action="query",
@@ -84,7 +84,7 @@ def main():
             )
 
             # 5️⃣ 执行处理脚本
-            t1 = datetime.now()
+            t1 = datetime.utcnow()
             try:
                 res = run_worker({
                     "script": script,
@@ -98,12 +98,12 @@ def main():
                     db_conn, log_id,
                     stage="EXEC", action="algorithm",
                     level="ERROR", status="FAIL",
-                    start_time=t1, end_time=datetime.now(),
+                    start_time=t1, end_time=datetime.utcnow(),
                     message=str(e)
                 )
                 update_main_log(db_conn, log_id, "FAIL", str(e))
                 continue
-            t2 = datetime.now()
+            t2 = datetime.utcnow()
             insert_detail_log(
                 db_conn, log_id,
                 stage="EXEC", action="algorithm",
@@ -112,7 +112,7 @@ def main():
             )
 
             # 6️⃣ 插入结果（表名、列名来自 Kafka 消息）
-            t1 = datetime.now()
+            t1 = datetime.utcnow()
             try:
                 insert_values = strategy.build_insert_values(res["result"], data)
                 if insert_values:
@@ -126,12 +126,12 @@ def main():
                     db_conn, log_id,
                     stage="CK", action="insert",
                     level="ERROR", status="FAIL",
-                    start_time=t1, end_time=datetime.now(),
+                    start_time=t1, end_time=datetime.utcnow(),
                     message=str(e)
                 )
                 update_main_log(db_conn, log_id, "FAIL", str(e))
                 continue
-            t2 = datetime.now()
+            t2 = datetime.utcnow()
             insert_detail_log(
                 db_conn, log_id,
                 stage="CK", action="insert",
