@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/DataStrategy.py" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/algo_config.py" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/main.py" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/mysql/db.py" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/mysql/log_dao.py" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/mysql/script_dao.py" dialect="GenericSQL" />
+  </component>
+</project>

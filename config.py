@@ -1,0 +1,33 @@
+# -*- coding: utf-8 -*-
+import os
+
+KAFKA_BOOTSTRAP = ["192.168.5.167:9092"]
+KAFKA_TASK_TOPIC = "TEST_TASK"
+KAFKA_RESULT_TOPIC = "TEST_TASK_RESULT"
+
+# ClickHouse（HTTP）
+CK_HOST = "192.168.5.167"
+CK_PORT = 8123
+CK_DB = "edap_algorithm_service_test"
+CK_USER = "default"
+CK_PASSWORD = ''
+
+# MySQL
+MYSQL_HOST = "192.168.5.166"
+MYSQL_PORT = 3306
+MYSQL_DB = "edap_algorithm_service"
+MYSQL_USER = "root"
+MYSQL_PASSWORD = "Szch@2024"
+
+# REDIS
+REDIS_HOST = "192.168.5.166"
+REDIS_PORT = 6379
+REDIS_DB = 0
+REDIS_PASSWORD = 'Szch@2024'
+
+REDIS_LOCK_TTL = 300    # 秒
+
+QUEUE_MAXSIZE = 200
+SCRIPT_TIMEOUT = 300
+WORKER_NUM=2
+SERVER_TAG = os.getenv("SERVER_TAG", "common-node")
