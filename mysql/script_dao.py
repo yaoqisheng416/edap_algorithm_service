@@ -12,4 +12,9 @@ def get_script(test_item):
     row = cur.fetchone()
     cur.close()
     conn.close()
-    return row[0] if row else None
+
+    if not row or not row[0]:
+        raise Exception(f"Script not found for test_item={test_item}")
+
+    return row[0]
+

@@ -1,31 +1,39 @@
 # -*- coding: utf-8 -*-
 class GenericStrategy:
+    """
+    通用策略：
+    - 不关心 test_item
+    - 不关心表结构
+    - insert_sql 决定列顺序
+    """
 
-    def __init__(self, cfg: dict):
-        self.cfg = cfg
+    def build_insert_values(self, result, query_data):
+        """
+        result: 脚本 run(data) 的返回
+        支持：
+        - dict
+        - list[dict]
+        - list[tuple]
+        """
 
-    def query(self, ck, task):
-        sql = self.cfg["query_sql"].format(
-            order_no=task["order_no"],
-            cell_id=task["cell_id"]
-        )
-        return self.ck_query_rows(ck, sql)
+        if result is None:
+            return []
 
-    @staticmethod
-    def ck_query_rows(ck, sql):
-        res = ck.query(sql)
-        if isinstance(res, list):
-            return res
-        return res.result_rows
+        # 单条 dict
+        if isinstance(result, dict):
+            return [tuple(result.values())]
 
-    def insert(self, ck, result: dict, task):
-        values = [
-            tuple(task[k] if k in task else result[k]
-                  for k in self.cfg["insert_cols"])
-        ]
+        # 多条
+        values = []
+        for row in result:
+            if isinstance(row, dict):
+                values.append(tuple(row.values()))
+            elif isinstance(row, (list, tuple)):
+                values.append(tuple(row))
+            else:
+                raise Exception(f"Unsupported result row type: {type(row)}")
 
-        ck.insert(
-            self.cfg["insert_table"],
-            values,
-            self.cfg["insert_cols"]
-        )
+        return values
+
+
+

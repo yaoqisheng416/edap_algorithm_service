@@ -6,11 +6,11 @@ KAFKA_TASK_TOPIC = "TEST_TASK"
 KAFKA_RESULT_TOPIC = "TEST_TASK_RESULT"
 
 # ClickHouse（HTTP）
-CK_HOST = "192.168.5.167"
+CK_HOST = "192.168.5.112"
 CK_PORT = 8123
-CK_DB = "edap_algorithm_service_test"
+CK_DB = "chart_db"
 CK_USER = "default"
-CK_PASSWORD = ''
+CK_PASSWORD = 'Szch@2024'
 
 # MySQL
 MYSQL_HOST = "192.168.5.166"
